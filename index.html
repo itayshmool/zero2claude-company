@@ -97,7 +97,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     text-decoration: none;
     color: inherit;
     padding: 8px 12px;
@@ -105,9 +105,18 @@
     margin-right: -12px;
     border-radius: 12px;
     transition: background 0.2s;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    background: none;
+    font-size: inherit;
+    width: calc(100% + 24px);
+    text-align: left;
   }
 
-  a.section-header:hover { background: var(--surface); }
+  .section-header:hover { background: var(--surface); }
+
+  .section-header[aria-expanded="true"] { margin-bottom: 20px; }
 
   .section-icon {
     width: 40px;
@@ -124,16 +133,35 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 20px;
     font-weight: 600;
+    color: var(--text);
   }
 
-  .section-arrow {
-    font-size: 18px;
+  .section-chevron {
+    font-size: 16px;
+    color: var(--text-dim);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .section-header[aria-expanded="true"] .section-chevron {
+    transform: rotate(90deg);
+  }
+
+  .section-link {
+    font-size: 12px;
     color: var(--text-dim);
     opacity: 0;
     transition: opacity 0.2s;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
   }
 
-  a.section-header:hover .section-arrow { opacity: 1; }
+  .section-header:hover .section-link { opacity: 1; }
+  .section-link:hover { border-color: var(--border-light); color: var(--text-muted); }
 
   .section-status {
     margin-left: auto;
@@ -142,6 +170,52 @@
     padding: 4px 12px;
     border-radius: 100px;
     border: 1px solid;
+    flex-shrink: 0;
+  }
+
+  .section-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  /* ── Collapse Animation ── */
+  .section-body {
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+    max-height: 3000px;
+    opacity: 1;
+  }
+
+  .section-body.collapsed {
+    max-height: 0;
+    opacity: 0;
+  }
+
+  /* ── Theme Toggle ── */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+    z-index: 100;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--border-light);
+    background: var(--card-hover);
   }
 
   /* ── Flow Diagram ── */
@@ -288,6 +362,7 @@
 </style>
 </head>
 <body>
+<button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode">🌙</button>
 <div class="container">
 
   <!-- Header -->
@@ -359,12 +434,15 @@
   <!-- R&D / Product -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <a href="rnd/" class="section-header">
+    <button class="section-header" aria-expanded="false" data-target="rnd-body">
+      <span class="section-chevron">&#9654;</span>
       <div class="section-icon" style="background: var(--orange-glow);">🔧</div>
       <div class="section-title">R&D / Product</div>
-      <span class="section-arrow">→</span>
+      <span class="section-count">6 systems</span>
       <span class="section-status status-active">Active</span>
-    </a>
+      <a href="rnd/" class="section-link" onclick="event.stopPropagation()">Open &rarr;</a>
+    </button>
+    <div class="section-body collapsed" id="rnd-body">
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -439,18 +517,22 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════ -->
   <!-- DevOps / Infrastructure -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <a href="devops/" class="section-header">
+    <button class="section-header" aria-expanded="false" data-target="devops-body">
+      <span class="section-chevron">&#9654;</span>
       <div class="section-icon" style="background: rgba(106, 191, 105, 0.15);">⚙️</div>
       <div class="section-title">DevOps / Infrastructure</div>
-      <span class="section-arrow">→</span>
+      <span class="section-count">10 systems</span>
       <span class="section-status status-active">Active</span>
-    </a>
+      <a href="devops/" class="section-link" onclick="event.stopPropagation()">Open &rarr;</a>
+    </button>
+    <div class="section-body collapsed" id="devops-body">
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -578,18 +660,22 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════ -->
   <!-- Analytics & Intelligence -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <a href="analytics/" class="section-header">
+    <button class="section-header" aria-expanded="false" data-target="analytics-body">
+      <span class="section-chevron">&#9654;</span>
       <div class="section-icon" style="background: rgba(96, 165, 250, 0.15);">📊</div>
       <div class="section-title">Analytics & Intelligence</div>
-      <span class="section-arrow">→</span>
+      <span class="section-count">7 systems</span>
       <span class="section-status status-active">Active</span>
-    </a>
+      <a href="analytics/" class="section-link" onclick="event.stopPropagation()">Open &rarr;</a>
+    </button>
+    <div class="section-body collapsed" id="analytics-body">
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -679,18 +765,22 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════ -->
   <!-- Marketing & Growth -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <a href="marketing/" class="section-header">
+    <button class="section-header" aria-expanded="false" data-target="marketing-body">
+      <span class="section-chevron">&#9654;</span>
       <div class="section-icon" style="background: rgba(244, 114, 182, 0.15);">📣</div>
       <div class="section-title">Marketing & Growth</div>
-      <span class="section-arrow">→</span>
+      <span class="section-count">8 systems</span>
       <span class="section-status status-active">Active</span>
-    </a>
+      <a href="marketing/" class="section-link" onclick="event.stopPropagation()">Open &rarr;</a>
+    </button>
+    <div class="section-body collapsed" id="marketing-body">
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -791,18 +881,22 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════ -->
   <!-- Community & Support -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <a href="community/" class="section-header">
+    <button class="section-header" aria-expanded="false" data-target="community-body">
+      <span class="section-chevron">&#9654;</span>
       <div class="section-icon" style="background: rgba(167, 139, 250, 0.15);">🫂</div>
       <div class="section-title">Community & Support</div>
-      <span class="section-arrow">→</span>
+      <span class="section-count">7 systems</span>
       <span class="section-status status-active">Active</span>
-    </a>
+      <a href="community/" class="section-link" onclick="event.stopPropagation()">Open &rarr;</a>
+    </button>
+    <div class="section-body collapsed" id="community-body">
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -887,18 +981,22 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════ -->
   <!-- Revenue -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <a href="revenue/" class="section-header">
+    <button class="section-header" aria-expanded="false" data-target="revenue-body">
+      <span class="section-chevron">&#9654;</span>
       <div class="section-icon" style="background: rgba(251, 191, 36, 0.15);">💰</div>
       <div class="section-title">Revenue</div>
-      <span class="section-arrow">→</span>
+      <span class="section-count">1 system</span>
       <span class="section-status status-active">Active</span>
-    </a>
+      <a href="revenue/" class="section-link" onclick="event.stopPropagation()">Open &rarr;</a>
+    </button>
+    <div class="section-body collapsed" id="revenue-body">
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -914,18 +1012,22 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════ -->
   <!-- Legal -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <a href="legal/" class="section-header">
+    <button class="section-header" aria-expanded="false" data-target="legal-body">
+      <span class="section-chevron">&#9654;</span>
       <div class="section-icon" style="background: rgba(248, 113, 113, 0.15);">⚖️</div>
       <div class="section-title">Legal & Compliance</div>
-      <span class="section-arrow">→</span>
+      <span class="section-count">2 systems</span>
       <span class="section-status status-active">Active</span>
-    </a>
+      <a href="legal/" class="section-link" onclick="event.stopPropagation()">Open &rarr;</a>
+    </button>
+    <div class="section-body collapsed" id="legal-body">
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -951,6 +1053,7 @@
           <span class="chip">GDPR aware</span>
         </div>
       </div>
+    </div>
     </div>
   </div>
 
@@ -1003,5 +1106,36 @@
   </div>
 
 </div>
+<script>
+  // Collapsible sections
+  document.querySelectorAll('.section-header[data-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const body = document.getElementById(btn.dataset.target);
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !expanded);
+      body.classList.toggle('collapsed', expanded);
+    });
+  });
+
+  // Theme toggle
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    toggle.textContent = '\u2600\uFE0F';
+  }
+  toggle.addEventListener('click', () => {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if (isLight) {
+      document.documentElement.removeAttribute('data-theme');
+      toggle.textContent = '\uD83C\uDF19';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      toggle.textContent = '\u2600\uFE0F';
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>
 </body>
 </html>

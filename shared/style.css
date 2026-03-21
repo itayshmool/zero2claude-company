@@ -23,6 +23,27 @@
   --red: #F87171;
 }
 
+[data-theme="light"] {
+  --void: #F8F8FA;
+  --surface: #FFFFFF;
+  --card: #FFFFFF;
+  --card-hover: #F4F4F5;
+  --border: #E4E4E7;
+  --border-light: #D4D4D8;
+  --text: #18181B;
+  --text-muted: #52525B;
+  --text-dim: #71717A;
+  --orange: #E55A2B;
+  --orange-glow: rgba(229, 90, 43, 0.1);
+  --green: #16A34A;
+  --blue: #3B82F6;
+  --purple: #8B5CF6;
+  --pink: #EC4899;
+  --yellow: #CA8A04;
+  --cyan: #0891B2;
+  --red: #DC2626;
+}
+
 body {
   background: var(--void);
   color: var(--text);
