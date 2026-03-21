@@ -366,12 +366,68 @@
 
   /* ── Responsive ── */
   @media (max-width: 640px) {
-    .container { padding: 24px 16px 60px; }
-    .stats-bar { gap: 20px; }
+    .container { padding: 20px 14px 48px; }
+
+    /* Header */
+    .header { margin-bottom: 36px; }
+    .header .subtitle { font-size: 15px; }
+    .header .tagline { font-size: 12px; padding: 6px 14px; }
+
+    /* Stats */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 36px;
+      padding: 16px 0;
+    }
     .stat-value { font-size: 22px; }
-    .flow-diagram { flex-direction: column; }
-    .flow-arrow { transform: rotate(90deg); }
+    .stat-label { font-size: 11px; }
+
+    /* CEO */
+    .ceo-section { padding: 24px 16px; margin-bottom: 36px; }
+    .ceo-avatar { width: 64px; height: 64px; font-size: 28px; }
+    .ceo-name { font-size: 18px; }
     .ceo-roles { gap: 6px; }
+    .ceo-role { font-size: 10px; padding: 3px 10px; }
+    .ceo-plus { flex-direction: column; gap: 8px; }
+    .ai-stack { flex-wrap: wrap; justify-content: center; }
+    .ai-chip { font-size: 11px; padding: 4px 10px; }
+
+    /* Section headers */
+    .section-header {
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px 8px;
+      margin-left: -8px;
+      margin-right: -8px;
+      width: calc(100% + 16px);
+    }
+    .section-icon { width: 32px; height: 32px; font-size: 16px; border-radius: 8px; }
+    .section-title { font-size: 15px; }
+    .section-count { display: none; }
+    .section-link { display: none; }
+    .section-status { font-size: 10px; padding: 2px 8px; }
+    .org-section { margin-bottom: 32px; }
+
+    /* Cards */
+    .cards { grid-template-columns: 1fr; gap: 12px; }
+    .card { padding: 16px; }
+    .card-name { font-size: 13px; }
+    .card-desc { font-size: 12px; }
+
+    /* Flow */
+    .flow-section { margin: 36px 0; }
+    .flow-diagram { flex-direction: column; padding: 16px; }
+    .flow-arrow { transform: rotate(90deg); }
+    .flow-node { padding: 10px 16px; min-width: unset; }
+    .flow-node-icon { width: 40px; height: 40px; font-size: 18px; }
+
+    /* Footer */
+    .footer { margin-top: 36px; font-size: 11px; }
+
+    /* Theme toggle - smaller on mobile */
+    .theme-toggle { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 16px; }
   }
 </style>
 </head>
