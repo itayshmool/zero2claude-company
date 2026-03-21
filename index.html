@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero2Claude — One-Man AI Company</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --void: #09090B;
+    --surface: #111113;
+    --card: #18181B;
+    --card-hover: #1E1E22;
+    --border: #27272A;
+    --border-light: #3F3F46;
+    --text: #FAFAFA;
+    --text-muted: #A1A1AA;
+    --text-dim: #71717A;
+    --orange: #FF6B35;
+    --orange-glow: rgba(255, 107, 53, 0.15);
+    --green: #6ABF69;
+    --blue: #60A5FA;
+    --purple: #A78BFA;
+    --pink: #F472B6;
+    --yellow: #FBBF24;
+    --cyan: #22D3EE;
+    --red: #F87171;
+  }
+
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .header-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--orange);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .header h1 span { color: var(--orange); }
+
+  .header .subtitle {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+
+  .header .tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .header .tagline .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── Stats Bar ── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--orange);
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* ── Org Chart ── */
+  .org-section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .section-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .section-status {
+    margin-left: auto;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid;
+  }
+
+  .status-active { color: var(--green); border-color: rgba(106, 191, 105, 0.3); background: rgba(106, 191, 105, 0.08); }
+  .status-partial { color: var(--yellow); border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.08); }
+  .status-planned { color: var(--text-dim); border-color: var(--border); background: var(--card); }
+  .status-missing { color: var(--red); border-color: rgba(248, 113, 113, 0.3); background: rgba(248, 113, 113, 0.08); }
+
+  /* ── Cards Grid ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: var(--border-light);
+    background: var(--card-hover);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .card-emoji { font-size: 22px; }
+
+  .card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .card-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-ai { background: var(--orange-glow); color: var(--orange); border: 1px solid rgba(255, 107, 53, 0.3); }
+  .badge-auto { background: rgba(106, 191, 105, 0.1); color: var(--green); border: 1px solid rgba(106, 191, 105, 0.3); }
+  .badge-manual { background: rgba(161, 161, 170, 0.1); color: var(--text-dim); border: 1px solid var(--border); }
+  .badge-todo { background: rgba(248, 113, 113, 0.1); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .card-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  /* ── Connector Lines ── */
+  .flow-section {
+    margin: 60px 0;
+  }
+
+  .flow-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  .flow-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 20px;
+    min-width: 100px;
+  }
+
+  .flow-node-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+
+  .flow-node-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .flow-arrow {
+    font-size: 20px;
+    color: var(--border-light);
+    padding: 0 4px;
+  }
+
+  /* ── CEO Section ── */
+  .ceo-section {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    position: relative;
+  }
+
+  .ceo-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange), #FF8F5E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 16px;
+    border: 3px solid var(--border);
+  }
+
+  .ceo-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .ceo-roles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .ceo-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    background: var(--card);
+  }
+
+  .ceo-plus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .ceo-plus-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .ai-stack {
+    display: flex;
+    gap: 8px;
+  }
+
+  .ai-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: var(--orange-glow);
+    color: var(--orange);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .stats-bar { gap: 20px; }
+    .stat-value { font-size: 22px; }
+    .flow-diagram { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .ceo-roles { gap: 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-label">Company Architecture</div>
+    <h1><span>Zero2Claude</span>.dev</h1>
+    <p class="subtitle">A one-person, AI-powered education company. Every department runs on automation, AI agents, and duct tape.</p>
+    <div class="tagline">
+      <span class="dot"></span>
+      1 human &middot; multiple AI agents &middot; 200+ students
+    </div>
+  </div>
+
+  <!-- CEO -->
+  <div class="ceo-section">
+    <div class="ceo-avatar">👨‍💻</div>
+    <div class="ceo-name">Itay</div>
+    <div style="color: var(--text-dim); font-size: 14px;">Founder / Everything Officer</div>
+    <div class="ceo-roles">
+      <span class="ceo-role">CEO</span>
+      <span class="ceo-role">CTO</span>
+      <span class="ceo-role">Designer</span>
+      <span class="ceo-role">DevOps</span>
+      <span class="ceo-role">Content Writer</span>
+      <span class="ceo-role">Support</span>
+      <span class="ceo-role">Marketing</span>
+      <span class="ceo-role">QA</span>
+    </div>
+    <div class="ceo-plus">
+      <span class="ceo-plus-label">Powered by</span>
+      <div class="ai-stack">
+        <span class="ai-chip">Claude Code</span>
+        <span class="ai-chip">Gemini</span>
+        <span class="ai-chip">GA4</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value">147</div>
+      <div class="stat-label">Lessons</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">14</div>
+      <div class="stat-label">Levels</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">200+</div>
+      <div class="stat-label">Students</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">1</div>
+      <div class="stat-label">Employee</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">789+</div>
+      <div class="stat-label">Tests</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- R&D / Product -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="org-section">
+    <div class="section-header">
+      <div class="section-icon" style="background: var(--orange-glow);">🔧</div>
+      <div class="section-title">R&D / Product</div>
+      <span class="section-status status-active">Active</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">📚</span>
+          <span class="card-name">Curriculum Engine</span>
+          <span class="card-badge badge-manual">Manual + AI</span>
+        </div>
+        <div class="card-desc">147 lessons across 14 levels. JSON-driven content with 10 interactive section types. Content authored manually, structured by AI.</div>
+        <div class="card-stack">
+          <span class="chip">React 18</span>
+          <span class="chip">TypeScript</span>
+          <span class="chip">Vite</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🤖</span>
+          <span class="card-name">AI Onboarding</span>
+          <span class="card-badge badge-ai">AI</span>
+        </div>
+        <div class="card-desc">Personalized learning plans generated by Claude or Gemini. Students describe their background, AI builds a custom path through the curriculum.</div>
+        <div class="card-stack">
+          <span class="chip">Anthropic API</span>
+          <span class="chip">Gemini API</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🎨</span>
+          <span class="card-name">AI Palette Generator</span>
+          <span class="card-badge badge-ai">AI</span>
+        </div>
+        <div class="card-desc">Admin describes a theme, AI generates a full 14-token color palette for both dark and light modes. Stored in DB, selectable by users.</div>
+        <div class="card-stack">
+          <span class="chip">Anthropic</span>
+          <span class="chip">Gemini</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🗣️</span>
+          <span class="card-name">Text-to-Speech</span>
+          <span class="card-badge badge-auto">Auto</span>
+        </div>
+        <div class="card-desc">Browser SpeechSynthesis reads lesson content aloud. Admin-configurable voice, rate, pitch. Zero backend cost.</div>
+        <div class="card-stack">
+          <span class="chip">Web Speech API</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">💬</span>
+          <span class="card-name">Community Forum</span>
+          <span class="card-badge badge-auto">Auto-moderated</span>
+        </div>
+        <div class="card-desc">Discussion categories, threads, replies, voting, full-text search, image attachments. Content moderation pipeline on all user input.</div>
+        <div class="card-stack">
+          <span class="chip">PostgreSQL tsvector</span>
+          <span class="chip">Socket.IO</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🤝</span>
+          <span class="card-name">Peer Help</span>
+          <span class="card-badge badge-auto">Auto-moderated</span>
+        </div>
+        <div class="card-desc">Real-time help system. Students request help on specific lessons, peers respond via Socket.IO chat. Dual moderation pipeline.</div>
+        <div class="card-stack">
+          <span class="chip">Socket.IO</span>
+          <span class="chip">Content Moderation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- DevOps / Infrastructure -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="org-section">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(106, 191, 105, 0.15);">⚙️</div>
+      <div class="section-title">DevOps / Infrastructure</div>
+      <span class="section-status status-active">Active</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🚀</span>
+          <span class="card-name">Auto-Deploy Pipeline</span>
+          <span class="card-badge badge-auto">Auto</span>
+        </div>
+        <div class="card-desc">Push to main auto-deploys frontend (static CDN) and backend (web service). Feature branches deploy to staging on Render.</div>
+        <div class="card-stack">
+          <span class="chip">Render</span>
+          <span class="chip">Git push</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🔍</span>
+          <span class="card-name">Triage Agent</span>
+          <span class="card-badge badge-ai">AI Agent</span>
+        </div>
+        <div class="card-desc">Autonomous agent polls GitHub issues hourly. Spawns Claude Code to investigate bugs, creates fix branches + draft PRs, closes invalid issues.</div>
+        <div class="card-stack">
+          <span class="chip">Claude Agent SDK</span>
+          <span class="chip">launchd</span>
+          <span class="chip">GitHub API</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🛡️</span>
+          <span class="card-name">Maintenance Detection</span>
+          <span class="card-badge badge-auto">Auto</span>
+        </div>
+        <div class="card-desc">4-state health machine (healthy/suspicious/down/recovering). Heartbeat polling, exponential backoff, auto-recovery confirmation.</div>
+        <div class="card-stack">
+          <span class="chip">State Machine</span>
+          <span class="chip">Admin Toggle</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🧪</span>
+          <span class="card-name">Test Suite</span>
+          <span class="card-badge badge-auto">CI</span>
+        </div>
+        <div class="card-desc">789+ tests across frontend (Vitest/jsdom) and backend (supertest). Lesson validation, components, API endpoints, forum, admin.</div>
+        <div class="card-stack">
+          <span class="chip">Vitest</span>
+          <span class="chip">supertest</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🔐</span>
+          <span class="card-name">Security Layer</span>
+          <span class="card-badge badge-auto">Auto</span>
+        </div>
+        <div class="card-desc">Prompt injection guards, HTML sanitization, content moderation (profanity + link spam), CSS validation, input size limits via Zod.</div>
+        <div class="card-stack">
+          <span class="chip">Zod</span>
+          <span class="chip">sanitizeForPrompt</span>
+          <span class="chip">moderateContent</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">🚨</span>
+          <span class="card-name">Error Monitoring</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No Sentry or equivalent. Frontend crashes in production go undetected unless a student reports via forum or GitHub issue.</div>
+        <div class="card-stack">
+          <span class="chip">Sentry?</span>
+          <span class="chip">LogRocket?</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">📡</span>
+          <span class="card-name">Uptime Monitoring</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No external uptime monitor. Maintenance page detects outages reactively. No proactive alerts, no status page.</div>
+        <div class="card-stack">
+          <span class="chip">UptimeRobot?</span>
+          <span class="chip">Checkly?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- Analytics & Intelligence -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="org-section">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(96, 165, 250, 0.15);">📊</div>
+      <div class="section-title">Analytics & Intelligence</div>
+      <span class="section-status status-partial">Partial</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">📈</span>
+          <span class="card-name">Google Analytics 4</span>
+          <span class="card-badge badge-auto">Auto</span>
+        </div>
+        <div class="card-desc">Page views, forum events (thread create, reply, vote, search), custom GTM tags/triggers. Traffic-level analytics.</div>
+        <div class="card-stack">
+          <span class="chip">GA4</span>
+          <span class="chip">GTM</span>
+          <span class="chip">dataLayer</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🏆</span>
+          <span class="card-name">Achievement Tracking</span>
+          <span class="card-badge badge-auto">Auto</span>
+        </div>
+        <div class="card-desc">16 server-computed achievements (milestones, streaks, speed). Toast notifications on unlock. Progress stats on dashboard.</div>
+        <div class="card-stack">
+          <span class="chip">PostgreSQL</span>
+          <span class="chip">Server-side</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">📋</span>
+          <span class="card-name">Admin Dashboard</span>
+          <span class="card-badge badge-manual">Manual</span>
+        </div>
+        <div class="card-desc">Student list, progress stats, lesson management, AI onboarding usage, provider stats. Operational visibility.</div>
+        <div class="card-stack">
+          <span class="chip">React</span>
+          <span class="chip">Admin API</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">🔬</span>
+          <span class="card-name">Product Analytics</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No funnel analysis, no cohort tracking, no drop-off detection. Can't answer "where do students stop?" GA4 is weak for product behavior.</div>
+        <div class="card-stack">
+          <span class="chip">PostHog?</span>
+          <span class="chip">Mixpanel?</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">🧪</span>
+          <span class="card-name">A/B Testing</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No framework for testing onboarding flows, lesson formats, or engagement experiments.</div>
+        <div class="card-stack">
+          <span class="chip">PostHog?</span>
+          <span class="chip">GrowthBook?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- Marketing & Growth -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="org-section">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(244, 114, 182, 0.15);">📣</div>
+      <div class="section-title">Marketing & Growth</div>
+      <span class="section-status status-partial">Partial</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🌐</span>
+          <span class="card-name">Landing Page</span>
+          <span class="card-badge badge-manual">Manual</span>
+        </div>
+        <div class="card-desc">about.zero2claude.dev — static marketing site with level overview, feature highlights, and registration CTA.</div>
+        <div class="card-stack">
+          <span class="chip">HTML/CSS/JS</span>
+          <span class="chip">Render Static</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🐦</span>
+          <span class="card-name">Social Channels</span>
+          <span class="card-badge badge-manual">Manual</span>
+        </div>
+        <div class="card-desc">LinkedIn and Twitter/X presence. Manual posting, no automation, no scheduling tool.</div>
+        <div class="card-stack">
+          <span class="chip">LinkedIn</span>
+          <span class="chip">Twitter/X</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">✉️</span>
+          <span class="card-name">Email Marketing</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">Collect emails at registration but never email students. No drip campaigns, no re-engagement, no streak reminders, no notifications.</div>
+        <div class="card-stack">
+          <span class="chip">Resend?</span>
+          <span class="chip">Loops?</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">🔍</span>
+          <span class="card-name">SEO</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No blog, no sitemap.xml, no indexable lesson previews. Organic search traffic is likely near zero.</div>
+        <div class="card-stack">
+          <span class="chip">Blog?</span>
+          <span class="chip">Sitemap?</span>
+          <span class="chip">Meta tags?</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">🔗</span>
+          <span class="card-name">Referral System</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">200 students but no mechanism for them to invite others. No shareable links, no tracking, no incentives.</div>
+        <div class="card-stack">
+          <span class="chip">Invite links?</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">📹</span>
+          <span class="card-name">Content Marketing</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No YouTube, TikTok, or video content. Terminal demos are inherently visual and shareable.</div>
+        <div class="card-stack">
+          <span class="chip">YouTube?</span>
+          <span class="chip">Shorts?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- Community & Support -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="org-section">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(167, 139, 250, 0.15);">🫂</div>
+      <div class="section-title">Community & Support</div>
+      <span class="section-status status-partial">Partial</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">💬</span>
+          <span class="card-name">Forum</span>
+          <span class="card-badge badge-auto">Auto-moderated</span>
+        </div>
+        <div class="card-desc">Built-in community forum with categories, threads, voting, search. Feature requests via genie-themed wish system.</div>
+        <div class="card-stack">
+          <span class="chip">In-app</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🤝</span>
+          <span class="card-name">Peer Help</span>
+          <span class="card-badge badge-auto">Auto</span>
+        </div>
+        <div class="card-desc">Real-time lesson-specific help. Students help each other via Socket.IO chat.</div>
+        <div class="card-stack">
+          <span class="chip">Socket.IO</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🐛</span>
+          <span class="card-name">Bug Reports</span>
+          <span class="card-badge badge-ai">AI-triaged</span>
+        </div>
+        <div class="card-desc">Students report bugs in-app, creates GitHub Issues. Triage agent investigates, auto-fixes, emails reporter with updates.</div>
+        <div class="card-stack">
+          <span class="chip">GitHub Issues</span>
+          <span class="chip">Claude Agent</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">🎓</span>
+          <span class="card-name">Certificates</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No completion certificates. Students can't share achievements on LinkedIn. Free marketing left on the table.</div>
+        <div class="card-stack">
+          <span class="chip">PDF generation?</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">⭐</span>
+          <span class="card-name">Testimonials</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">200 students but no visible reviews or success stories. No social proof on the landing page.</div>
+        <div class="card-stack">
+          <span class="chip">Landing page?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- Revenue -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="org-section">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(251, 191, 36, 0.15);">💰</div>
+      <div class="section-title">Revenue</div>
+      <span class="section-status status-planned">Planned</span>
+    </div>
+    <div class="cards">
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">☕</span>
+          <span class="card-name">Buy Me a Coffee</span>
+          <span class="card-badge badge-todo">Planned</span>
+        </div>
+        <div class="card-desc">Donation-based model to cover server costs. Non-intrusive placement at milestones. "Help keep this free for everyone."</div>
+        <div class="card-stack">
+          <span class="chip">BMC / Ko-fi</span>
+          <span class="chip">Milestone CTAs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- Legal -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="org-section">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(248, 113, 113, 0.15);">⚖️</div>
+      <div class="section-title">Legal & Compliance</div>
+      <span class="section-status status-missing">Missing</span>
+    </div>
+    <div class="cards">
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">📄</span>
+          <span class="card-name">Terms of Service</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No ToS. Required when collecting user data, emails, and hosting user-generated content (forum).</div>
+        <div class="card-stack">
+          <span class="chip">Legal template</span>
+        </div>
+      </div>
+      <div class="card" style="border-style: dashed;">
+        <div class="card-header">
+          <span class="card-emoji">🔒</span>
+          <span class="card-name">Privacy Policy</span>
+          <span class="card-badge badge-todo">Missing</span>
+        </div>
+        <div class="card-desc">No privacy policy. Collecting emails, progress data, profile images, AI-generated plans — all require disclosure.</div>
+        <div class="card-stack">
+          <span class="chip">GDPR</span>
+          <span class="chip">Cookie consent</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- Data Flow Diagram -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="flow-section">
+    <div class="flow-title">How It All Connects</div>
+    <div class="flow-diagram">
+      <div class="flow-node">
+        <div class="flow-node-icon" style="background: rgba(244, 114, 182, 0.15);">👤</div>
+        <div class="flow-node-label">Student<br>signs up</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-icon" style="background: var(--orange-glow);">🤖</div>
+        <div class="flow-node-label">AI builds<br>learning plan</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-icon" style="background: rgba(96, 165, 250, 0.15);">📚</div>
+        <div class="flow-node-label">Lessons +<br>exercises</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-icon" style="background: rgba(106, 191, 105, 0.15);">🏆</div>
+        <div class="flow-node-label">Achievements<br>+ streaks</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-icon" style="background: rgba(167, 139, 250, 0.15);">💬</div>
+        <div class="flow-node-label">Forum +<br>peer help</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-icon" style="background: rgba(251, 191, 36, 0.15);">🐛</div>
+        <div class="flow-node-label">Bug report →<br>AI triage</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="flow-node-icon" style="background: rgba(106, 191, 105, 0.15);">🚀</div>
+        <div class="flow-node-label">Auto-fix<br>+ deploy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    zero2claude.dev &middot; One human, many agents, zero excuses.
+  </div>
+
+</div>
+</body>
+</html>
