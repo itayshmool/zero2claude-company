@@ -14,9 +14,9 @@
   <div class="dept-header">
     <div class="dept-icon" style="background: rgba(96, 165, 250, 0.15);">📊</div>
     <div class="dept-title">Analytics & Intelligence</div>
-    <span class="dept-status status-partial">Partial</span>
+    <span class="dept-status status-active">Active</span>
   </div>
-  <p class="dept-desc">Traffic analytics via GA4, server-side achievement tracking, and an admin dashboard for operational visibility. Missing product-level analytics and experimentation.</p>
+  <p class="dept-desc">Traffic analytics via GA4, server-side achievement tracking, admin dashboard, and 2 AI agent skills for student metrics reports and GA4 event auditing.</p>
 
   <div class="section-label">Active Systems</div>
   <div class="cards">
@@ -62,6 +62,36 @@
     </div>
   </div>
 
+  <div class="section-label">AI Agent Skills</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">📊</span>
+        <span class="card-name">Report Agent</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Generates weekly/monthly student metrics reports by querying production PostgreSQL via Render MCP. Covers signups, active students, lesson completion rates by level, streak analysis, forum activity, peer help stats, and AI onboarding adoption.</div>
+      <div class="card-stack">
+        <span class="chip">/analytics-report</span>
+        <span class="chip">weekly | monthly</span>
+        <span class="chip">--preview</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🔎</span>
+        <span class="card-name">GA4 Audit Agent</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Cross-references all trackEvent() calls in the codebase against the GTM container JSON. Identifies orphaned events (in code but no GTM tag), stale tags, and generates a complete event catalog. Can auto-fix GTM config on a feature branch.</div>
+      <div class="card-stack">
+        <span class="chip">/analytics-ga4</span>
+        <span class="chip">audit | events | traffic</span>
+        <span class="chip">--fix</span>
+      </div>
+    </div>
+  </div>
+
   <div class="section-label">Missing — To Build</div>
   <div class="cards">
     <div class="card" style="border-style: dashed;">
@@ -92,7 +122,7 @@
 
   <div class="roadmap">
     <div class="roadmap-title">Roadmap</div>
-    <div class="roadmap-desc">Future agents and systems for this department will be documented here as they're planned and built.</div>
+    <div class="roadmap-desc">2 AI skills active. Next: PostHog product analytics integration, cohort retention analysis, A/B testing framework.</div>
   </div>
 
   <div class="footer">zero2claude.dev / analytics</div>

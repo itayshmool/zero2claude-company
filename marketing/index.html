@@ -14,9 +14,9 @@
   <div class="dept-header">
     <div class="dept-icon" style="background: rgba(244, 114, 182, 0.15);">📣</div>
     <div class="dept-title">Marketing & Growth</div>
-    <span class="dept-status status-partial">Partial</span>
+    <span class="dept-status status-active">Active</span>
   </div>
-  <p class="dept-desc">Landing page and social channels are live. Email marketing, SEO, referrals, and content marketing are all missing — the biggest gap in the company.</p>
+  <p class="dept-desc">Landing page, social channels, and 4 AI agent skills covering SEO, landing page sync, social media drafting, and email campaigns. Referrals and content marketing still planned.</p>
 
   <div class="section-label">Active Systems</div>
   <div class="cards">
@@ -24,9 +24,9 @@
       <div class="card-header">
         <span class="card-emoji">🌐</span>
         <span class="card-name">Landing Page</span>
-        <span class="card-badge badge-manual">Manual</span>
+        <span class="card-badge badge-ai">AI-Managed</span>
       </div>
-      <div class="card-desc">about.zero2claude.dev — static marketing site with level overview, feature highlights, and registration CTA. Separate repo, deployed on Render as a static site. Needs updating when new levels or features ship.</div>
+      <div class="card-desc">about.zero2claude.dev — static marketing site with level overview, feature highlights, and registration CTA. Separate repo, deployed on Render as a static site. Needs updating when new levels or features ship. AI skill auto-syncs content with CLAUDE.md when product changes.</div>
       <div class="card-stack">
         <span class="chip">HTML/CSS/JS</span>
         <span class="chip">Render Static</span>
@@ -37,12 +37,68 @@
       <div class="card-header">
         <span class="card-emoji">🐦</span>
         <span class="card-name">Social Channels</span>
-        <span class="card-badge badge-manual">Manual</span>
+        <span class="card-badge badge-ai">AI-Drafted</span>
       </div>
-      <div class="card-desc">LinkedIn and Twitter/X presence. Manual posting, no automation, no scheduling tool, no content calendar. Engagement is sporadic and unstructured.</div>
+      <div class="card-desc">LinkedIn and Twitter/X presence. AI skill drafts posts for human approval — milestone announcements, weekly recaps, and content pillar rotation.</div>
       <div class="card-stack">
         <span class="chip">LinkedIn</span>
         <span class="chip">Twitter/X</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">AI Agent Skills</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🔍</span>
+        <span class="card-name">SEO Agent</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Generates sitemap.xml, injects meta tags into index.html, and creates static blog posts in public/blog/ targeting high-intent search queries. Blog posts are fully crawlable static HTML served before the SPA rewrite.</div>
+      <div class="card-stack">
+        <span class="chip">/marketing-seo</span>
+        <span class="chip">sitemap | meta | blog</span>
+        <span class="chip">--preview</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🌐</span>
+        <span class="card-name">Landing Page Agent</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Reads CLAUDE.md, compares with about.zero2claude.dev, identifies discrepancies (stale counts, missing features), and updates the landing page on a feature branch.</div>
+      <div class="card-stack">
+        <span class="chip">/marketing-landing</span>
+        <span class="chip">--diff-only</span>
+        <span class="chip">--preview</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">📱</span>
+        <span class="card-name">Social Media Agent</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Drafts LinkedIn and Twitter/X posts for human approval. Supports milestone announcements, weekly recaps, and ad-hoc topics. Researches trends and hashtags. Never posts directly.</div>
+      <div class="card-stack">
+        <span class="chip">/marketing-social</span>
+        <span class="chip">--milestone</span>
+        <span class="chip">--weekly</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">✉️</span>
+        <span class="card-name">Email Agent</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Resend-powered email campaigns: 5-email welcome drip, streak reminders, re-engagement flows for inactive students, and feature announcement newsletters. Dark theme email templates matching the app.</div>
+      <div class="card-stack">
+        <span class="chip">/marketing-email</span>
+        <span class="chip">drip | streak | re-engage | announce</span>
+        <span class="chip">--template-only</span>
       </div>
     </div>
   </div>
@@ -103,7 +159,7 @@
 
   <div class="roadmap">
     <div class="roadmap-title">Roadmap</div>
-    <div class="roadmap-desc">Future agents and systems for this department will be documented here as they're planned and built.</div>
+    <div class="roadmap-desc">4 AI skills active. Next: referral system with invite links, content marketing (YouTube/Shorts), automated social media posting.</div>
   </div>
 
   <div class="footer">zero2claude.dev / marketing</div>

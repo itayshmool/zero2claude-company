@@ -322,6 +322,7 @@
         <span class="ai-chip">Claude Code</span>
         <span class="ai-chip">Gemini</span>
         <span class="ai-chip">GA4</span>
+        <span class="ai-chip">15 AI Skills</span>
       </div>
     </div>
   </div>
@@ -347,6 +348,10 @@
     <div class="stat">
       <div class="stat-value">789+</div>
       <div class="stat-label">Tests</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">15</div>
+      <div class="stat-label">AI Skills</div>
     </div>
   </div>
 
@@ -509,6 +514,45 @@
           <span class="chip">moderateContent</span>
         </div>
       </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🩺</span>
+          <span class="card-name">Status Check Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Quick 10-second production health probe. Curl-based endpoint checks, error count, last deploy status. Traffic light verdict.</div>
+        <div class="card-stack">
+          <span class="chip">/devops-status</span>
+          <span class="chip">Quick</span>
+          <span class="chip">Probes</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🚑</span>
+          <span class="card-name">Incident Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Traces production errors from logs through code to root cause. Classifies severity, identifies the breaking commit, proposes or implements fixes.</div>
+        <div class="card-stack">
+          <span class="chip">/devops-incident</span>
+          <span class="chip">--fix</span>
+          <span class="chip">Root cause</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">📦</span>
+          <span class="card-name">Deploy Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Pre-deploy safety checklist, post-deploy verification, and rollback guidance. Checks tests, schema migrations, env vars, and breaking changes.</div>
+        <div class="card-stack">
+          <span class="chip">/devops-deploy</span>
+          <span class="chip">Checklist</span>
+          <span class="chip">Rollback</span>
+        </div>
+      </div>
       <div class="card" style="border-style: dashed;">
         <div class="card-header">
           <span class="card-emoji">🚨</span>
@@ -544,7 +588,7 @@
       <div class="section-icon" style="background: rgba(96, 165, 250, 0.15);">📊</div>
       <div class="section-title">Analytics & Intelligence</div>
       <span class="section-arrow">→</span>
-      <span class="section-status status-partial">Partial</span>
+      <span class="section-status status-active">Active</span>
     </a>
     <div class="cards">
       <div class="card">
@@ -584,6 +628,32 @@
           <span class="chip">Admin API</span>
         </div>
       </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">📊</span>
+          <span class="card-name">Report Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Generates student metrics reports by querying production PostgreSQL. Progress rates, retention, streaks, forum activity, AI onboarding adoption.</div>
+        <div class="card-stack">
+          <span class="chip">/analytics-report</span>
+          <span class="chip">SQL</span>
+          <span class="chip">Weekly</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🔎</span>
+          <span class="card-name">GA4 Audit Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Audits GA4 event tracking across codebase vs GTM container. Identifies orphaned events, generates event catalog, syncs GTM config.</div>
+        <div class="card-stack">
+          <span class="chip">/analytics-ga4</span>
+          <span class="chip">GTM</span>
+          <span class="chip">Audit</span>
+        </div>
+      </div>
       <div class="card" style="border-style: dashed;">
         <div class="card-header">
           <span class="card-emoji">🔬</span>
@@ -619,14 +689,14 @@
       <div class="section-icon" style="background: rgba(244, 114, 182, 0.15);">📣</div>
       <div class="section-title">Marketing & Growth</div>
       <span class="section-arrow">→</span>
-      <span class="section-status status-partial">Partial</span>
+      <span class="section-status status-active">Active</span>
     </a>
     <div class="cards">
       <div class="card">
         <div class="card-header">
           <span class="card-emoji">🌐</span>
           <span class="card-name">Landing Page</span>
-          <span class="card-badge badge-manual">Manual</span>
+          <span class="card-badge badge-ai">AI-Managed</span>
         </div>
         <div class="card-desc">about.zero2claude.dev — static marketing site with level overview, feature highlights, and registration CTA.</div>
         <div class="card-stack">
@@ -638,12 +708,38 @@
         <div class="card-header">
           <span class="card-emoji">🐦</span>
           <span class="card-name">Social Channels</span>
-          <span class="card-badge badge-manual">Manual</span>
+          <span class="card-badge badge-ai">AI-Drafted</span>
         </div>
         <div class="card-desc">LinkedIn and Twitter/X presence. Manual posting, no automation, no scheduling tool.</div>
         <div class="card-stack">
           <span class="chip">LinkedIn</span>
           <span class="chip">Twitter/X</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🔍</span>
+          <span class="card-name">SEO Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Generates sitemap.xml, meta tags, and static blog posts for organic search. Targets high-intent queries like 'what is a terminal' and 'how to use Claude Code'.</div>
+        <div class="card-stack">
+          <span class="chip">/marketing-seo</span>
+          <span class="chip">Blog</span>
+          <span class="chip">Sitemap</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">✉️</span>
+          <span class="card-name">Email Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Resend-powered email campaigns: welcome drip sequences, streak reminders, re-engagement flows, and feature announcements.</div>
+        <div class="card-stack">
+          <span class="chip">/marketing-email</span>
+          <span class="chip">Resend</span>
+          <span class="chip">Drip</span>
         </div>
       </div>
       <div class="card" style="border-style: dashed;">
@@ -705,7 +801,7 @@
       <div class="section-icon" style="background: rgba(167, 139, 250, 0.15);">🫂</div>
       <div class="section-title">Community & Support</div>
       <span class="section-arrow">→</span>
-      <span class="section-status status-partial">Partial</span>
+      <span class="section-status status-active">Active</span>
     </a>
     <div class="cards">
       <div class="card">
@@ -742,6 +838,32 @@
           <span class="chip">Claude Agent</span>
         </div>
       </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">🛡️</span>
+          <span class="card-name">Moderation Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Reviews recent forum content for edge cases that bypass automated filters. Audits moderation rules, reports rejection rates and flagged users.</div>
+        <div class="card-stack">
+          <span class="chip">/community-moderate</span>
+          <span class="chip">Review</span>
+          <span class="chip">Audit</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-emoji">📈</span>
+          <span class="card-name">Engagement Agent</span>
+          <span class="card-badge badge-ai">AI Skill</span>
+        </div>
+        <div class="card-desc">Community health dashboard: post velocity, reply ratios, top contributors, unanswered threads. Analyzes feature requests by vote rank and theme.</div>
+        <div class="card-stack">
+          <span class="chip">/community-engage</span>
+          <span class="chip">Health</span>
+          <span class="chip">Ideas</span>
+        </div>
+      </div>
       <div class="card" style="border-style: dashed;">
         <div class="card-header">
           <span class="card-emoji">🎓</span>
@@ -775,17 +897,18 @@
       <div class="section-icon" style="background: rgba(251, 191, 36, 0.15);">💰</div>
       <div class="section-title">Revenue</div>
       <span class="section-arrow">→</span>
-      <span class="section-status status-planned">Planned</span>
+      <span class="section-status status-active">Active</span>
     </a>
     <div class="cards">
-      <div class="card" style="border-style: dashed;">
+      <div class="card">
         <div class="card-header">
           <span class="card-emoji">☕</span>
           <span class="card-name">Buy Me a Coffee</span>
-          <span class="card-badge badge-todo">Planned</span>
+          <span class="card-badge badge-ai">AI Skill</span>
         </div>
-        <div class="card-desc">Donation-based model to cover server costs. Non-intrusive placement at milestones. "Help keep this free for everyone."</div>
+        <div class="card-desc">AI skill handles Buy Me a Coffee integration — CTA placement at milestones, dashboard widget, landing page support section. Non-intrusive, never guilt-driven.</div>
         <div class="card-stack">
+          <span class="chip">/revenue-donations</span>
           <span class="chip">BMC / Ko-fi</span>
           <span class="chip">Milestone CTAs</span>
         </div>

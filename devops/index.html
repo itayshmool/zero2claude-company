@@ -16,7 +16,7 @@
     <div class="dept-title">DevOps / Infrastructure</div>
     <span class="dept-status status-active">Active</span>
   </div>
-  <p class="dept-desc">Auto-deploy pipeline, AI-powered bug triage, health monitoring, test suite, and security layer. The systems that keep production running without a dedicated ops team.</p>
+  <p class="dept-desc">Auto-deploy pipeline, AI-powered bug triage, health monitoring, test suite, security layer, and 3 AI agent skills for status checks, incident response, and deploy management. The systems that keep production running without a dedicated ops team.</p>
 
   <div class="section-label">Active Systems</div>
   <div class="cards">
@@ -91,6 +91,49 @@
     </div>
   </div>
 
+  <div class="section-label">AI Agent Skills</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🩺</span>
+        <span class="card-name">Status Check</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Quick 10-second production health probe. Curls API, frontend, and DB endpoints in parallel. Checks last deploy status and recent error count. Traffic light verdict: green/yellow/red.</div>
+      <div class="card-stack">
+        <span class="chip">/devops-status</span>
+        <span class="chip">--full</span>
+        <span class="chip">Render MCP</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🚑</span>
+        <span class="card-name">Incident Response</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Traces production errors from Render logs through the codebase to root cause. Classifies severity (critical/high/medium), identifies the breaking commit, proposes or implements fixes on a feature branch.</div>
+      <div class="card-stack">
+        <span class="chip">/devops-incident</span>
+        <span class="chip">--fix</span>
+        <span class="chip">--dry-run</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">📦</span>
+        <span class="card-name">Deploy Manager</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Pre-deploy safety checklist (tests, migrations, env vars, breaking changes), post-deploy health verification, deploy history, and rollback guidance. The safety net before pushing to main.</div>
+      <div class="card-stack">
+        <span class="chip">/devops-deploy</span>
+        <span class="chip">check | verify | rollback</span>
+        <span class="chip">history</span>
+      </div>
+    </div>
+  </div>
+
   <div class="section-label">Missing — To Build</div>
   <div class="cards">
     <div class="card" style="border-style: dashed;">
@@ -121,7 +164,7 @@
 
   <div class="roadmap">
     <div class="roadmap-title">Roadmap</div>
-    <div class="roadmap-desc">Future agents and systems for this department will be documented here as they're planned and built.</div>
+    <div class="roadmap-desc">3 AI skills active. Next: Sentry error monitoring integration, external uptime probes with status page, automated incident runbooks.</div>
   </div>
 
   <div class="footer">zero2claude.dev / devops</div>
