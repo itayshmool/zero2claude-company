@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics & Intelligence — Zero2Claude</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="container">
+
+  <a href="../" class="back-link">← Back to Overview</a>
+
+  <div class="dept-header">
+    <div class="dept-icon" style="background: rgba(96, 165, 250, 0.15);">📊</div>
+    <div class="dept-title">Analytics & Intelligence</div>
+    <span class="dept-status status-partial">Partial</span>
+  </div>
+  <p class="dept-desc">Traffic analytics via GA4, server-side achievement tracking, and an admin dashboard for operational visibility. Missing product-level analytics and experimentation.</p>
+
+  <div class="section-label">Active Systems</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">📈</span>
+        <span class="card-name">Google Analytics 4</span>
+        <span class="card-badge badge-auto">Auto</span>
+      </div>
+      <div class="card-desc">Page views, forum events (thread_create, reply_create, vote, search), custom GTM tags/triggers/variables. Traffic-level analytics with dataLayer push via trackEvent() utility. GTM container config committed to repo.</div>
+      <div class="card-stack">
+        <span class="chip">GA4</span>
+        <span class="chip">GTM</span>
+        <span class="chip">dataLayer</span>
+        <span class="chip">Custom events</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🏆</span>
+        <span class="card-name">Achievement Tracking</span>
+        <span class="card-badge badge-auto">Auto</span>
+      </div>
+      <div class="card-desc">16 server-computed achievements across 4 categories: milestones (first lesson, level completions), streaks (3/7/30 day), speed (complete 5 lessons in a day), and mastery (complete all lessons in a level). Toast notifications on unlock, progress stats on dashboard.</div>
+      <div class="card-stack">
+        <span class="chip">PostgreSQL</span>
+        <span class="chip">Server-side</span>
+        <span class="chip">16 achievements</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">📋</span>
+        <span class="card-name">Admin Dashboard</span>
+        <span class="card-badge badge-manual">Manual</span>
+      </div>
+      <div class="card-desc">Student list with progress, level/lesson management, site settings, AI onboarding usage stats (totals + provider split), palette management, forum moderation, TTS configuration. Operational visibility for one admin.</div>
+      <div class="card-stack">
+        <span class="chip">React</span>
+        <span class="chip">Admin API</span>
+        <span class="chip">JWT auth</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Missing — To Build</div>
+  <div class="cards">
+    <div class="card" style="border-style: dashed;">
+      <div class="card-header">
+        <span class="card-emoji">🔬</span>
+        <span class="card-name">Product Analytics</span>
+        <span class="card-badge badge-todo">Missing</span>
+      </div>
+      <div class="card-desc">No funnel analysis, no cohort tracking, no drop-off detection. Can't answer "where do students stop?" or "what % complete level 1?" GA4 is good for traffic, weak for product behavior. Need PostHog or similar.</div>
+      <div class="card-stack">
+        <span class="chip">PostHog?</span>
+        <span class="chip">Mixpanel?</span>
+      </div>
+    </div>
+    <div class="card" style="border-style: dashed;">
+      <div class="card-header">
+        <span class="card-emoji">🧪</span>
+        <span class="card-name">A/B Testing</span>
+        <span class="card-badge badge-todo">Missing</span>
+      </div>
+      <div class="card-desc">No framework for testing onboarding flows, lesson formats, pricing pages, or engagement experiments. No feature flags beyond admin toggles.</div>
+      <div class="card-stack">
+        <span class="chip">PostHog?</span>
+        <span class="chip">GrowthBook?</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="roadmap">
+    <div class="roadmap-title">Roadmap</div>
+    <div class="roadmap-desc">Future agents and systems for this department will be documented here as they're planned and built.</div>
+  </div>
+
+  <div class="footer">zero2claude.dev / analytics</div>
+</div>
+</body>
+</html>

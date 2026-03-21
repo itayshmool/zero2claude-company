@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community & Support — Zero2Claude</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="container">
+
+  <a href="../" class="back-link">← Back to Overview</a>
+
+  <div class="dept-header">
+    <div class="dept-icon" style="background: rgba(167, 139, 250, 0.15);">🫂</div>
+    <div class="dept-title">Community & Support</div>
+    <span class="dept-status status-partial">Partial</span>
+  </div>
+  <p class="dept-desc">In-app forum, peer help, and AI-triaged bug reports. Missing completion certificates and student testimonials for social proof.</p>
+
+  <div class="section-label">Active Systems</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">💬</span>
+        <span class="card-name">Forum</span>
+        <span class="card-badge badge-auto">Auto-moderated</span>
+      </div>
+      <div class="card-desc">Built-in community forum with general and lesson-specific categories, threads, replies, upvote/downvote voting, full-text search. Feature requests via genie-themed wish system. Image attachments with lightbox viewer. Content moderation on all user input.</div>
+      <div class="card-stack">
+        <span class="chip">In-app</span>
+        <span class="chip">PostgreSQL</span>
+        <span class="chip">tsvector search</span>
+        <span class="chip">Moderation</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🤝</span>
+        <span class="card-name">Peer Help</span>
+        <span class="card-badge badge-auto">Auto</span>
+      </div>
+      <div class="card-desc">Real-time lesson-specific help via Socket.IO. Students request help, peers respond in chat. Dual moderation pipeline: sanitizeForPrompt() → moderateContent(). HelpPanel and HelpRequestModal components.</div>
+      <div class="card-stack">
+        <span class="chip">Socket.IO</span>
+        <span class="chip">Real-time</span>
+        <span class="chip">Dual moderation</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🐛</span>
+        <span class="card-name">Bug Reports</span>
+        <span class="card-badge badge-ai">AI-triaged</span>
+      </div>
+      <div class="card-desc">Students report bugs in-app → creates GitHub Issues. Triage agent (hourly) spawns Claude Code to investigate, creates fix branches + draft PRs for valid bugs, comments and closes invalid ones. Server sends email notifications to reporter + admin digest.</div>
+      <div class="card-stack">
+        <span class="chip">GitHub Issues</span>
+        <span class="chip">Claude Agent SDK</span>
+        <span class="chip">Email notifications</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Missing — To Build</div>
+  <div class="cards">
+    <div class="card" style="border-style: dashed;">
+      <div class="card-header">
+        <span class="card-emoji">🎓</span>
+        <span class="card-name">Certificates</span>
+        <span class="card-badge badge-todo">Missing</span>
+      </div>
+      <div class="card-desc">No completion certificates. Students can't share achievements on LinkedIn, which is free marketing. Need PDF generation for level completion and full curriculum completion. Shareable link + download.</div>
+      <div class="card-stack">
+        <span class="chip">PDF generation?</span>
+        <span class="chip">LinkedIn share?</span>
+      </div>
+    </div>
+    <div class="card" style="border-style: dashed;">
+      <div class="card-header">
+        <span class="card-emoji">⭐</span>
+        <span class="card-name">Testimonials</span>
+        <span class="card-badge badge-todo">Missing</span>
+      </div>
+      <div class="card-desc">200 students but no visible reviews or success stories. No social proof on the landing page. Need a way to collect and display student testimonials.</div>
+      <div class="card-stack">
+        <span class="chip">Landing page?</span>
+        <span class="chip">In-app prompt?</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="roadmap">
+    <div class="roadmap-title">Roadmap</div>
+    <div class="roadmap-desc">Future agents and systems for this department will be documented here as they're planned and built.</div>
+  </div>
+
+  <div class="footer">zero2claude.dev / community</div>
+</div>
+</body>
+</html>

@@ -4,46 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zero2Claude — One-Man AI Company</title>
+<link rel="stylesheet" href="shared/style.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --void: #09090B;
-    --surface: #111113;
-    --card: #18181B;
-    --card-hover: #1E1E22;
-    --border: #27272A;
-    --border-light: #3F3F46;
-    --text: #FAFAFA;
-    --text-muted: #A1A1AA;
-    --text-dim: #71717A;
-    --orange: #FF6B35;
-    --orange-glow: rgba(255, 107, 53, 0.15);
-    --green: #6ABF69;
-    --blue: #60A5FA;
-    --purple: #A78BFA;
-    --pink: #F472B6;
-    --yellow: #FBBF24;
-    --cyan: #22D3EE;
-    --red: #F87171;
-  }
-
-  body {
-    background: var(--void);
-    color: var(--text);
-    font-family: 'Inter', system-ui, sans-serif;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 24px 80px;
-  }
-
   /* ── Header ── */
   .header {
     text-align: center;
@@ -113,9 +75,7 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .stat {
-    text-align: center;
-  }
+  .stat { text-align: center; }
 
   .stat-value {
     font-family: 'JetBrains Mono', monospace;
@@ -130,17 +90,24 @@
     margin-top: 2px;
   }
 
-  /* ── Org Chart ── */
-  .org-section {
-    margin-bottom: 48px;
-  }
+  /* ── Org Sections ── */
+  .org-section { margin-bottom: 48px; }
 
   .section-header {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
+    text-decoration: none;
+    color: inherit;
+    padding: 8px 12px;
+    margin-left: -12px;
+    margin-right: -12px;
+    border-radius: 12px;
+    transition: background 0.2s;
   }
+
+  a.section-header:hover { background: var(--surface); }
 
   .section-icon {
     width: 40px;
@@ -159,6 +126,15 @@
     font-weight: 600;
   }
 
+  .section-arrow {
+    font-size: 18px;
+    color: var(--text-dim);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  a.section-header:hover .section-arrow { opacity: 1; }
+
   .section-status {
     margin-left: auto;
     font-size: 12px;
@@ -168,90 +144,8 @@
     border: 1px solid;
   }
 
-  .status-active { color: var(--green); border-color: rgba(106, 191, 105, 0.3); background: rgba(106, 191, 105, 0.08); }
-  .status-partial { color: var(--yellow); border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.08); }
-  .status-planned { color: var(--text-dim); border-color: var(--border); background: var(--card); }
-  .status-missing { color: var(--red); border-color: rgba(248, 113, 113, 0.3); background: rgba(248, 113, 113, 0.08); }
-
-  /* ── Cards Grid ── */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-  }
-
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    transition: border-color 0.2s, background 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card:hover {
-    border-color: var(--border-light);
-    background: var(--card-hover);
-  }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .card-emoji { font-size: 22px; }
-
-  .card-name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  .card-badge {
-    margin-left: auto;
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    padding: 2px 8px;
-    border-radius: 100px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .badge-ai { background: var(--orange-glow); color: var(--orange); border: 1px solid rgba(255, 107, 53, 0.3); }
-  .badge-auto { background: rgba(106, 191, 105, 0.1); color: var(--green); border: 1px solid rgba(106, 191, 105, 0.3); }
-  .badge-manual { background: rgba(161, 161, 170, 0.1); color: var(--text-dim); border: 1px solid var(--border); }
-  .badge-todo { background: rgba(248, 113, 113, 0.1); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
-
-  .card-desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 12px;
-  }
-
-  .card-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .chip {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 4px;
-    background: var(--surface);
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-  }
-
-  /* ── Connector Lines ── */
-  .flow-section {
-    margin: 60px 0;
-  }
+  /* ── Flow Diagram ── */
+  .flow-section { margin: 60px 0; }
 
   .flow-title {
     font-family: 'JetBrains Mono', monospace;
@@ -370,10 +264,7 @@
     color: var(--text-muted);
   }
 
-  .ai-stack {
-    display: flex;
-    gap: 8px;
-  }
+  .ai-stack { display: flex; gap: 8px; }
 
   .ai-chip {
     font-family: 'JetBrains Mono', monospace;
@@ -383,17 +274,6 @@
     background: var(--orange-glow);
     color: var(--orange);
     border: 1px solid rgba(255, 107, 53, 0.3);
-  }
-
-  /* ── Footer ── */
-  .footer {
-    text-align: center;
-    margin-top: 60px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    color: var(--text-dim);
-    font-size: 13px;
-    font-family: 'JetBrains Mono', monospace;
   }
 
   /* ── Responsive ── */
@@ -474,11 +354,12 @@
   <!-- R&D / Product -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <div class="section-header">
+    <a href="rnd/" class="section-header">
       <div class="section-icon" style="background: var(--orange-glow);">🔧</div>
       <div class="section-title">R&D / Product</div>
+      <span class="section-arrow">→</span>
       <span class="section-status status-active">Active</span>
-    </div>
+    </a>
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -559,11 +440,12 @@
   <!-- DevOps / Infrastructure -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <div class="section-header">
+    <a href="devops/" class="section-header">
       <div class="section-icon" style="background: rgba(106, 191, 105, 0.15);">⚙️</div>
       <div class="section-title">DevOps / Infrastructure</div>
+      <span class="section-arrow">→</span>
       <span class="section-status status-active">Active</span>
-    </div>
+    </a>
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -658,11 +540,12 @@
   <!-- Analytics & Intelligence -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <div class="section-header">
+    <a href="analytics/" class="section-header">
       <div class="section-icon" style="background: rgba(96, 165, 250, 0.15);">📊</div>
       <div class="section-title">Analytics & Intelligence</div>
+      <span class="section-arrow">→</span>
       <span class="section-status status-partial">Partial</span>
-    </div>
+    </a>
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -732,11 +615,12 @@
   <!-- Marketing & Growth -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <div class="section-header">
+    <a href="marketing/" class="section-header">
       <div class="section-icon" style="background: rgba(244, 114, 182, 0.15);">📣</div>
       <div class="section-title">Marketing & Growth</div>
+      <span class="section-arrow">→</span>
       <span class="section-status status-partial">Partial</span>
-    </div>
+    </a>
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -817,11 +701,12 @@
   <!-- Community & Support -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <div class="section-header">
+    <a href="community/" class="section-header">
       <div class="section-icon" style="background: rgba(167, 139, 250, 0.15);">🫂</div>
       <div class="section-title">Community & Support</div>
+      <span class="section-arrow">→</span>
       <span class="section-status status-partial">Partial</span>
-    </div>
+    </a>
     <div class="cards">
       <div class="card">
         <div class="card-header">
@@ -886,11 +771,12 @@
   <!-- Revenue -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <div class="section-header">
+    <a href="revenue/" class="section-header">
       <div class="section-icon" style="background: rgba(251, 191, 36, 0.15);">💰</div>
       <div class="section-title">Revenue</div>
+      <span class="section-arrow">→</span>
       <span class="section-status status-planned">Planned</span>
-    </div>
+    </a>
     <div class="cards">
       <div class="card" style="border-style: dashed;">
         <div class="card-header">
@@ -911,11 +797,12 @@
   <!-- Legal -->
   <!-- ═══════════════════════════════════════ -->
   <div class="org-section">
-    <div class="section-header">
+    <a href="legal/" class="section-header">
       <div class="section-icon" style="background: rgba(248, 113, 113, 0.15);">⚖️</div>
       <div class="section-title">Legal & Compliance</div>
+      <span class="section-arrow">→</span>
       <span class="section-status status-missing">Missing</span>
-    </div>
+    </a>
     <div class="cards">
       <div class="card" style="border-style: dashed;">
         <div class="card-header">

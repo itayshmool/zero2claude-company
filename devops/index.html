@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps / Infrastructure — Zero2Claude</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="container">
+
+  <a href="../" class="back-link">← Back to Overview</a>
+
+  <div class="dept-header">
+    <div class="dept-icon" style="background: rgba(106, 191, 105, 0.15);">⚙️</div>
+    <div class="dept-title">DevOps / Infrastructure</div>
+    <span class="dept-status status-active">Active</span>
+  </div>
+  <p class="dept-desc">Auto-deploy pipeline, AI-powered bug triage, health monitoring, test suite, and security layer. The systems that keep production running without a dedicated ops team.</p>
+
+  <div class="section-label">Active Systems</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🚀</span>
+        <span class="card-name">Auto-Deploy Pipeline</span>
+        <span class="card-badge badge-auto">Auto</span>
+      </div>
+      <div class="card-desc">Push to main auto-deploys frontend (Render static CDN) and backend (Render web service). Feature branches deploy to staging environments. Database migrations run automatically on deploy. Zero manual intervention.</div>
+      <div class="card-stack">
+        <span class="chip">Render</span>
+        <span class="chip">Git push</span>
+        <span class="chip">Auto-migrate</span>
+        <span class="chip">Auto-seed</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🔍</span>
+        <span class="card-name">Triage Agent</span>
+        <span class="card-badge badge-ai">AI Agent</span>
+      </div>
+      <div class="card-desc">Autonomous Node.js agent polls GitHub issues hourly via macOS launchd. Spawns Claude Code instances (Agent SDK) to investigate bug reports — reads codebase, traces errors, creates fix branches + draft PRs for valid bugs, comments and closes invalid ones. POSTs results to server for email notifications.</div>
+      <div class="card-stack">
+        <span class="chip">Claude Agent SDK</span>
+        <span class="chip">launchd</span>
+        <span class="chip">GitHub API</span>
+        <span class="chip">DRY_RUN mode</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🛡️</span>
+        <span class="card-name">Maintenance Detection</span>
+        <span class="card-badge badge-auto">Auto</span>
+      </div>
+      <div class="card-desc">4-state health machine: healthy → suspicious → down → recovering. Heartbeat polling (60s healthy, 5s suspicious), exponential backoff (2s→30s when down), recovery requires 3 consecutive successes. Admin-toggled (default OFF). Fixed overlay preserves app tree state.</div>
+      <div class="card-stack">
+        <span class="chip">State Machine</span>
+        <span class="chip">Admin Toggle</span>
+        <span class="chip">Exponential Backoff</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🧪</span>
+        <span class="card-name">Test Suite</span>
+        <span class="card-badge badge-auto">CI</span>
+      </div>
+      <div class="card-desc">789+ tests across frontend (Vitest/jsdom) and backend (supertest). Covers lesson JSON validation, interactive components, palette utilities, hooks, forum endpoints, admin API, auth flows. Run before every deploy.</div>
+      <div class="card-stack">
+        <span class="chip">Vitest</span>
+        <span class="chip">supertest</span>
+        <span class="chip">jsdom</span>
+        <span class="chip">789+ tests</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🔐</span>
+        <span class="card-name">Security Layer</span>
+        <span class="card-badge badge-auto">Auto</span>
+      </div>
+      <div class="card-desc">Multi-layer security: prompt injection guards (sanitizeForPrompt), HTML sanitization, content moderation (profanity + link spam via moderateContent), CSS color validation, input size limits via Zod, XML delimiter wrapping for AI inputs.</div>
+      <div class="card-stack">
+        <span class="chip">Zod</span>
+        <span class="chip">sanitizeForPrompt</span>
+        <span class="chip">moderateContent</span>
+        <span class="chip">HTML sanitizer</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Missing — To Build</div>
+  <div class="cards">
+    <div class="card" style="border-style: dashed;">
+      <div class="card-header">
+        <span class="card-emoji">🚨</span>
+        <span class="card-name">Error Monitoring</span>
+        <span class="card-badge badge-todo">Missing</span>
+      </div>
+      <div class="card-desc">No Sentry or equivalent. Frontend crashes in production go undetected unless a student manually reports via forum or GitHub issue. Need real-time error tracking with source maps and session replay.</div>
+      <div class="card-stack">
+        <span class="chip">Sentry?</span>
+        <span class="chip">LogRocket?</span>
+      </div>
+    </div>
+    <div class="card" style="border-style: dashed;">
+      <div class="card-header">
+        <span class="card-emoji">📡</span>
+        <span class="card-name">Uptime Monitoring</span>
+        <span class="card-badge badge-todo">Missing</span>
+      </div>
+      <div class="card-desc">No external uptime monitor. Maintenance page detects outages reactively from the client side. Need proactive alerts (Slack/email) and a public status page for trust.</div>
+      <div class="card-stack">
+        <span class="chip">UptimeRobot?</span>
+        <span class="chip">Checkly?</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="roadmap">
+    <div class="roadmap-title">Roadmap</div>
+    <div class="roadmap-desc">Future agents and systems for this department will be documented here as they're planned and built.</div>
+  </div>
+
+  <div class="footer">zero2claude.dev / devops</div>
+</div>
+</body>
+</html>
