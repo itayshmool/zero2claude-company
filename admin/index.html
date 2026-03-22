@@ -316,6 +316,12 @@
       <div id="incidentsPanel"><div class="loading">Loading...</div></div>
     </div>
 
+    <!-- Open Pull Requests -->
+    <div class="panel">
+      <div class="panel-title">Open PRs <span class="panel-count" id="prCount">0</span></div>
+      <div id="prsPanel"><div class="loading">Loading...</div></div>
+    </div>
+
     <!-- GitHub Issues -->
     <div class="panel">
       <div class="panel-title">GitHub Issues <span class="panel-count" id="issueCount">0</span></div>
@@ -521,6 +527,26 @@ function renderIncidents(incidents) {
   </table>`;
 }
 
+function renderPrs(prs) {
+  const el = document.getElementById('prsPanel');
+  const countEl = document.getElementById('prCount');
+  countEl.textContent = prs.length;
+  if (prs.length === 0) {
+    el.innerHTML = '<div class="empty"><span class="empty-check">&#10003;</span> No open PRs</div>';
+    return;
+  }
+  el.innerHTML = `<table class="data-table">
+    <thead><tr><th>#</th><th>Title</th><th>Branch</th><th>Labels</th><th>Age</th></tr></thead>
+    <tbody>${prs.map(p => `<tr>
+      <td><a href="${esc(p.url)}" target="_blank" class="gh-link">#${p.number}</a></td>
+      <td>${esc(p.title)}${p.draft ? ' <span class="badge badge-low">draft</span>' : ''}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px">${esc(p.branch)}</td>
+      <td>${p.labels.map(l => `<span class="gh-label" style="background:#${l.color}22;color:#${l.color};border:1px solid #${l.color}44">${esc(l.name)}</span>`).join(' ')}</td>
+      <td>${timeAgo(p.createdAt)}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
 function renderGithub(issues) {
   const el = document.getElementById('githubPanel');
   const countEl = document.getElementById('issueCount');
@@ -567,11 +593,12 @@ async function refreshAll() {
     F('/api/tasks'),
     F('/api/incidents'),
     F('/api/github/issues'),
+    F('/api/github/prs'),
     F('/api/render/services'),
     F('/api/agent-log?limit=20'),
   ]);
 
-  const [kpis, tasks, incidents, github, render, agentLog] = results;
+  const [kpis, tasks, incidents, github, githubPrs, render, agentLog] = results;
 
   if (kpis.status === 'fulfilled') {
     renderKpiCards(kpis.value);
@@ -579,6 +606,7 @@ async function refreshAll() {
   }
   if (tasks.status === 'fulfilled') renderTasks(tasks.value);
   if (incidents.status === 'fulfilled') renderIncidents(incidents.value);
+  if (githubPrs.status === 'fulfilled') renderPrs(githubPrs.value);
   if (github.status === 'fulfilled') renderGithub(github.value);
   if (render.status === 'fulfilled') renderServices(render.value);
   if (agentLog.status === 'fulfilled') renderAgentLog(agentLog.value);
