@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Operations — Zero2Claude</title>
+<link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+<div class="container">
+
+  <a href="../" class="back-link">&larr; Back to Overview</a>
+
+  <div class="dept-header">
+    <div class="dept-icon" style="background: rgba(99, 102, 241, 0.15);">🏢</div>
+    <div class="dept-title">Business Operations</div>
+    <span class="dept-status status-active">Active</span>
+  </div>
+  <p class="dept-desc">The meta-department that orchestrates all other departments. Daily standups, weekly reviews, KPI tracking, and a shared Google Sheet dashboard that serves as the company's single source of truth. Three AI skills that turn Claude Code into a COO.</p>
+
+  <div class="section-label">Active Systems</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">📋</span>
+        <span class="card-name">Daily Standup Agent</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Runs a cross-department standup every morning. Probes production health, queries the database for KPIs (students, lessons, signups, errors), checks department status, and writes a briefing to the company dashboard. Flags blockers and overdue tasks.</div>
+      <div class="card-stack">
+        <span class="chip">/ops-standup</span>
+        <span class="chip">Render MCP</span>
+        <span class="chip">Google Sheets</span>
+        <span class="chip">PostgreSQL</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">📊</span>
+        <span class="card-name">Weekly Review Agent</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Deep weekly analysis of company performance. Compares KPI trends, reviews completed and blocked tasks, analyzes department metrics, and produces strategic recommendations with prioritized action items.</div>
+      <div class="card-stack">
+        <span class="chip">/ops-review</span>
+        <span class="chip">Trend Analysis</span>
+        <span class="chip">Strategy</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">🎛️</span>
+        <span class="card-name">KPI Dashboard Manager</span>
+        <span class="card-badge badge-ai">AI Skill</span>
+      </div>
+      <div class="card-desc">Direct interface to the company dashboard. Add tasks, log incidents, update statuses, query trends, and view the current state of all operations. The shared state that all other Ops skills read from.</div>
+      <div class="card-stack">
+        <span class="chip">/ops-kpi</span>
+        <span class="chip">Tasks</span>
+        <span class="chip">Incidents</span>
+        <span class="chip">Trends</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-emoji">📈</span>
+        <span class="card-name">Company Dashboard</span>
+        <span class="card-badge badge-auto">Google Sheet</span>
+      </div>
+      <div class="card-desc">Centralized Google Sheet with 4 tabs: KPIs (daily metrics), Tasks (cross-department work items), Agent Log (skill execution history), and Incidents (production issues). Single source of truth for company state.</div>
+      <div class="card-stack">
+        <span class="chip">KPIs</span>
+        <span class="chip">Tasks</span>
+        <span class="chip">Agent Log</span>
+        <span class="chip">Incidents</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Not Yet Built</div>
+  <div class="cards">
+    <div class="card" style="border-style: dashed;">
+      <div class="card-header">
+        <span class="card-emoji">⏰</span>
+        <span class="card-name">Scheduled Automation</span>
+        <span class="card-badge badge-todo">Missing</span>
+      </div>
+      <div class="card-desc">Standups and reviews run manually via slash commands. No cron/launchd scheduling yet. Could run daily standup automatically like the triage agent.</div>
+      <div class="card-stack">
+        <span class="chip">launchd?</span>
+        <span class="chip">Cron job?</span>
+      </div>
+    </div>
+    <div class="card" style="border-style: dashed;">
+      <div class="card-header">
+        <span class="card-emoji">🔔</span>
+        <span class="card-name">Alerts & Notifications</span>
+        <span class="card-badge badge-todo">Missing</span>
+      </div>
+      <div class="card-desc">No proactive alerts when KPIs hit thresholds (error spike, signup drop, response time degradation). Currently reactive — only discovered during standup.</div>
+      <div class="card-stack">
+        <span class="chip">Email alerts?</span>
+        <span class="chip">Slack?</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
