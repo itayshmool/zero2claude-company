@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEO Dashboard — Zero2Claude</title>
+<link rel="stylesheet" href="../shared/style.css">
+<style>
+  /* ── Dashboard Layout ── */
+  .dash-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .dash-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 700;
+    flex: 1;
+  }
+  .dash-title span { color: var(--orange); }
+  .dash-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .dash-user img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+  }
+  .dash-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .btn-sm {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-sm:hover { border-color: var(--border-light); color: var(--text); }
+
+  /* ── KPI Summary Cards ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .kpi-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--orange);
+  }
+  .kpi-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .kpi-trend {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  .trend-up { color: var(--green); }
+  .trend-down { color: var(--red); }
+  .trend-flat { color: var(--text-dim); }
+
+  /* ── Panel Grid ── */
+  .panel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    overflow: hidden;
+  }
+  .panel-full { grid-column: 1 / -1; }
+  .panel-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-count {
+    background: var(--orange-glow);
+    color: var(--orange);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  /* ── Tables ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--surface); }
+
+  /* ── Priority / Severity Badges ── */
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .badge-high, .badge-critical { background: rgba(248,113,113,0.15); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
+  .badge-medium { background: rgba(251,191,36,0.15); color: var(--yellow); border: 1px solid rgba(251,191,36,0.3); }
+  .badge-low { background: rgba(106,191,105,0.15); color: var(--green); border: 1px solid rgba(106,191,105,0.3); }
+
+  /* ── Service Status ── */
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .svc-card {
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .svc-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .svc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .svc-dot-green { background: var(--green); }
+  .svc-dot-red { background: var(--red); }
+  .svc-dot-yellow { background: var(--yellow); }
+  .svc-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* ── Label badges for GitHub ── */
+  .gh-label {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .gh-link {
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .gh-link:hover { text-decoration: underline; }
+
+  /* ── Loading / Empty ── */
+  .loading {
+    color: var(--text-dim);
+    font-size: 13px;
+    font-style: italic;
+    padding: 20px 0;
+  }
+  .empty {
+    color: var(--text-dim);
+    font-size: 13px;
+    padding: 16px 0;
+  }
+  .empty-check { color: var(--green); }
+
+  /* ── Refresh indicator ── */
+  .refresh-bar {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: right;
+    margin-bottom: 8px;
+  }
+
+  /* ── Overdue ── */
+  .overdue { color: var(--red); }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .panel-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .svc-grid { grid-template-columns: 1fr; }
+    .data-table { font-size: 12px; }
+    .data-table th, .data-table td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- Header -->
+  <div class="dash-header">
+    <div class="dash-title"><span>CEO</span> Dashboard</div>
+    <div class="dash-user" id="userInfo"></div>
+    <div class="dash-actions">
+      <button class="btn-sm" onclick="refreshAll()">Refresh</button>
+      <button class="btn-sm" onclick="logout()">Logout</button>
+      <a href="../" class="btn-sm" style="text-decoration:none">Team Site</a>
+    </div>
+  </div>
+
+  <div class="refresh-bar" id="refreshBar"></div>
+
+  <!-- KPI Summary Cards -->
+  <div class="kpi-grid" id="kpiCards">
+    <div class="kpi-card"><div class="loading">Loading KPIs...</div></div>
+  </div>
+
+  <!-- Panels Grid -->
+  <div class="panel-grid">
+    <!-- KPI Trend -->
+    <div class="panel">
+      <div class="panel-title">KPI Trend (14d)</div>
+      <div id="kpiTrend" style="overflow-x:auto"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- Render Services -->
+    <div class="panel">
+      <div class="panel-title">Render Services</div>
+      <div id="renderServices"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- Open Tasks -->
+    <div class="panel">
+      <div class="panel-title">Open Tasks <span class="panel-count" id="taskCount">0</span></div>
+      <div id="tasksPanel"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- Open Incidents -->
+    <div class="panel">
+      <div class="panel-title">Open Incidents <span class="panel-count" id="incidentCount">0</span></div>
+      <div id="incidentsPanel"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- GitHub Issues -->
+    <div class="panel">
+      <div class="panel-title">GitHub Issues <span class="panel-count" id="issueCount">0</span></div>
+      <div id="githubPanel"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- Agent Log -->
+    <div class="panel">
+      <div class="panel-title">Recent Agent Activity</div>
+      <div id="agentLogPanel"><div class="loading">Loading...</div></div>
+    </div>
+  </div>
+
+  <div class="footer">zero2claude.dev / ceo dashboard</div>
+</div>
+
+<script>
+const API = 'https://zero2claude-company-api.onrender.com';
+const F = (path) => fetch(API + path, { credentials: 'include' }).then(r => {
+  if (r.status === 401) { window.location.href = 'login.html'; throw new Error('auth'); }
+  if (!r.ok) throw new Error(r.statusText);
+  return r.json();
+});
+
+// ── Auth Check ──
+F('/api/me').then(user => {
+  document.getElementById('userInfo').innerHTML = user.picture
+    ? `<img src="${user.picture}" alt="">${user.name || user.email}`
+    : user.email;
+}).catch(() => window.location.href = 'login.html');
+
+function logout() {
+  fetch(API + '/auth/logout', { method: 'POST', credentials: 'include' })
+    .finally(() => window.location.href = 'login.html');
+}
+
+// ── Helpers ──
+function badge(level) {
+  const l = (level || '').toLowerCase();
+  const cls = (l === 'high' || l === 'critical') ? 'badge-high' : l === 'medium' ? 'badge-medium' : 'badge-low';
+  return `<span class="badge ${cls}">${level || '?'}</span>`;
+}
+
+function timeAgo(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now - d;
+  const mins = Math.floor(diffMs / 60000);
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  const days = Math.floor(hrs / 24);
+  return days + 'd ago';
+}
+
+function trendArrow(curr, prev) {
+  const c = parseFloat(curr), p = parseFloat(prev);
+  if (isNaN(c) || isNaN(p)) return '<span class="trend-flat">--</span>';
+  if (c > p) return '<span class="trend-up">&#9650; ' + c + '</span>';
+  if (c < p) return '<span class="trend-down">&#9660; ' + c + '</span>';
+  return '<span class="trend-flat">&#9644; ' + c + '</span>';
+}
+
+function isOverdue(due) {
+  if (!due) return false;
+  return new Date(due) < new Date();
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+// ── Render Functions ──
+function renderKpiCards(data) {
+  const el = document.getElementById('kpiCards');
+  if (!data.rows || data.rows.length === 0) {
+    el.innerHTML = '<div class="kpi-card"><div class="empty">No KPI data yet</div></div>';
+    return;
+  }
+  const latest = data.rows[data.rows.length - 1];
+  const prev = data.rows.length > 1 ? data.rows[data.rows.length - 2] : null;
+
+  const metrics = [
+    { key: 'activeStudents', label: 'Active Students', icon: '' },
+    { key: 'lessonsCompleted', label: 'Lessons (24h)', icon: '' },
+    { key: 'newSignups', label: 'Signups (24h)', icon: '' },
+    { key: 'errors', label: 'Errors (24h)', icon: '' },
+    { key: 'forumPosts', label: 'Forum Posts', icon: '' },
+    { key: 'deploys', label: 'Deploys', icon: '' },
+    { key: 'apiP95', label: 'API p95', icon: '' },
+  ];
+
+  el.innerHTML = metrics.map(m => {
+    const val = latest[m.key] || '--';
+    const trend = prev ? trendArrow(latest[m.key], prev[m.key]) : '';
+    return `<div class="kpi-card">
+      <div class="kpi-value">${esc(String(val))}</div>
+      <div class="kpi-label">${m.label}</div>
+      ${trend ? '<div class="kpi-trend">' + trend + '</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderKpiTrend(data) {
+  const el = document.getElementById('kpiTrend');
+  if (!data.rows || data.rows.length === 0) {
+    el.innerHTML = '<div class="empty">No trend data</div>';
+    return;
+  }
+  const cols = ['date','activeStudents','lessonsCompleted','newSignups','errors','deploys'];
+  const labels = ['Date','Students','Lessons','Signups','Errors','Deploys'];
+  el.innerHTML = `<table class="data-table">
+    <thead><tr>${labels.map(l => '<th>' + l + '</th>').join('')}</tr></thead>
+    <tbody>${data.rows.slice().reverse().map(r =>
+      '<tr>' + cols.map(c => '<td>' + esc(r[c] || '--') + '</td>').join('') + '</tr>'
+    ).join('')}</tbody>
+  </table>`;
+}
+
+function renderServices(services) {
+  const el = document.getElementById('renderServices');
+  if (!services || services.length === 0) {
+    el.innerHTML = '<div class="empty">No services found</div>';
+    return;
+  }
+  el.innerHTML = '<div class="svc-grid">' + services.map(s => {
+    const dotCls = s.status === 'error' ? 'svc-dot-red' : s.status === 'suspended' ? 'svc-dot-yellow' : 'svc-dot-green';
+    const deploy = s.lastDeploy
+      ? `${s.lastDeploy.status} &middot; ${timeAgo(s.lastDeploy.finishedAt)}`
+      : 'No deploys';
+    return `<div class="svc-card">
+      <div class="svc-name"><span class="svc-dot ${dotCls}"></span>${esc(s.label)}</div>
+      <div class="svc-meta">${s.plan} &middot; ${deploy}</div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function renderTasks(tasks) {
+  const el = document.getElementById('tasksPanel');
+  const countEl = document.getElementById('taskCount');
+  const open = tasks.filter(t => t.status.toLowerCase() !== 'done');
+  countEl.textContent = open.length;
+  if (open.length === 0) {
+    el.innerHTML = '<div class="empty"><span class="empty-check">&#10003;</span> All tasks complete</div>';
+    return;
+  }
+  el.innerHTML = `<table class="data-table">
+    <thead><tr><th>Pri</th><th>Task</th><th>Owner</th><th>Due</th></tr></thead>
+    <tbody>${open.map(t => {
+      const dueClass = isOverdue(t.due) && t.status.toLowerCase() !== 'done' ? ' class="overdue"' : '';
+      return `<tr>
+        <td>${badge(t.priority)}</td>
+        <td>${esc(t.task)}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:11px">${esc(t.owner)}</td>
+        <td${dueClass}>${esc(t.due || '--')}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+function renderIncidents(incidents) {
+  const el = document.getElementById('incidentsPanel');
+  const countEl = document.getElementById('incidentCount');
+  const open = incidents.filter(i => i.status.toLowerCase() !== 'resolved');
+  countEl.textContent = open.length;
+  if (open.length === 0) {
+    el.innerHTML = '<div class="empty"><span class="empty-check">&#10003;</span> All clear</div>';
+    return;
+  }
+  el.innerHTML = `<table class="data-table">
+    <thead><tr><th>Sev</th><th>Description</th><th>Date</th><th>Issue</th></tr></thead>
+    <tbody>${open.map(i => `<tr>
+      <td>${badge(i.severity)}</td>
+      <td>${esc(i.description)}</td>
+      <td>${esc(i.date)}</td>
+      <td>${i.issue ? esc(i.issue) : '--'}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+function renderGithub(issues) {
+  const el = document.getElementById('githubPanel');
+  const countEl = document.getElementById('issueCount');
+  countEl.textContent = issues.length;
+  if (issues.length === 0) {
+    el.innerHTML = '<div class="empty"><span class="empty-check">&#10003;</span> No open issues</div>';
+    return;
+  }
+  el.innerHTML = `<table class="data-table">
+    <thead><tr><th>#</th><th>Title</th><th>Labels</th><th>Age</th></tr></thead>
+    <tbody>${issues.map(i => `<tr>
+      <td><a href="${esc(i.url)}" target="_blank" class="gh-link">#${i.number}</a></td>
+      <td>${esc(i.title)}</td>
+      <td>${i.labels.map(l => `<span class="gh-label" style="background:#${l.color}22;color:#${l.color};border:1px solid #${l.color}44">${esc(l.name)}</span>`).join(' ')}</td>
+      <td>${timeAgo(i.createdAt)}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+function renderAgentLog(logs) {
+  const el = document.getElementById('agentLogPanel');
+  if (!logs || logs.length === 0) {
+    el.innerHTML = '<div class="empty">No agent activity yet</div>';
+    return;
+  }
+  el.innerHTML = `<table class="data-table">
+    <thead><tr><th>Time</th><th>Agent</th><th>Action</th><th>Result</th></tr></thead>
+    <tbody>${logs.map(l => `<tr>
+      <td style="white-space:nowrap">${esc(l.timestamp)}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px">${esc(l.agent)}</td>
+      <td>${esc(l.action)}</td>
+      <td>${esc(l.result)}</td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+// ── Data Fetching ──
+async function refreshAll() {
+  const bar = document.getElementById('refreshBar');
+  bar.textContent = 'Refreshing...';
+
+  const results = await Promise.allSettled([
+    F('/api/kpis?days=14'),
+    F('/api/tasks'),
+    F('/api/incidents'),
+    F('/api/github/issues'),
+    F('/api/render/services'),
+    F('/api/agent-log?limit=20'),
+  ]);
+
+  const [kpis, tasks, incidents, github, render, agentLog] = results;
+
+  if (kpis.status === 'fulfilled') {
+    renderKpiCards(kpis.value);
+    renderKpiTrend(kpis.value);
+  }
+  if (tasks.status === 'fulfilled') renderTasks(tasks.value);
+  if (incidents.status === 'fulfilled') renderIncidents(incidents.value);
+  if (github.status === 'fulfilled') renderGithub(github.value);
+  if (render.status === 'fulfilled') renderServices(render.value);
+  if (agentLog.status === 'fulfilled') renderAgentLog(agentLog.value);
+
+  bar.textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+}
+
+// Initial load + auto-refresh every 5 minutes
+refreshAll();
+setInterval(refreshAll, 5 * 60 * 1000);
+</script>
+</body>
+</html>
