@@ -234,6 +234,30 @@
   /* ── Overdue ── */
   .overdue { color: var(--red); }
 
+  /* ── Theme Toggle ── */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+    z-index: 100;
+  }
+  .theme-toggle:hover {
+    border-color: var(--border-light);
+    background: var(--card-hover);
+  }
+
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .panel-grid { grid-template-columns: 1fr; }
@@ -241,10 +265,12 @@
     .svc-grid { grid-template-columns: 1fr; }
     .data-table { font-size: 12px; }
     .data-table th, .data-table td { padding: 8px 6px; }
+    .theme-toggle { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 16px; }
   }
 </style>
 </head>
 <body>
+<button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode"></button>
 <div class="container">
   <!-- Header -->
   <div class="dash-header">
@@ -307,6 +333,28 @@
 </div>
 
 <script>
+// Theme toggle (shared localStorage key with main site)
+const toggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'light') {
+  document.documentElement.setAttribute('data-theme', 'light');
+  toggle.textContent = '\u2600\uFE0F';
+} else {
+  toggle.textContent = '\uD83C\uDF19';
+}
+toggle.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  if (isLight) {
+    document.documentElement.removeAttribute('data-theme');
+    toggle.textContent = '\uD83C\uDF19';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+    toggle.textContent = '\u2600\uFE0F';
+    localStorage.setItem('theme', 'light');
+  }
+});
+
 const API = 'https://zero2claude-company-api.onrender.com';
 const F = (path) => fetch(API + path, { credentials: 'include' }).then(r => {
   if (r.status === 401) { window.location.href = 'login.html'; throw new Error('auth'); }
