@@ -325,6 +325,11 @@
     <!-- GitHub Issues -->
     <div class="panel">
       <div class="panel-title">GitHub Issues <span class="panel-count" id="issueCount">0</span></div>
+      <div style="margin-bottom:10px">
+        <select id="issueLabelFilter" onchange="applyIssueFilter()" style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);cursor:pointer">
+          <option value="">All labels</option>
+        </select>
+      </div>
       <div id="githubPanel"><div class="loading">Loading...</div></div>
     </div>
 
@@ -547,17 +552,40 @@ function renderPrs(prs) {
   </table>`;
 }
 
+let allIssues = [];
+
 function renderGithub(issues) {
+  allIssues = issues;
+  populateLabelFilter(issues);
+  applyIssueFilter();
+}
+
+function populateLabelFilter(issues) {
+  const select = document.getElementById('issueLabelFilter');
+  const current = select.value;
+  const labels = new Map();
+  issues.forEach(i => i.labels.forEach(l => labels.set(l.name, l.color)));
+  const sorted = [...labels.keys()].sort();
+  select.innerHTML = '<option value="">All labels</option>' +
+    sorted.map(name => `<option value="${esc(name)}">${esc(name)}</option>`).join('');
+  select.value = sorted.includes(current) ? current : '';
+}
+
+function applyIssueFilter() {
+  const filter = document.getElementById('issueLabelFilter').value;
+  const filtered = filter
+    ? allIssues.filter(i => i.labels.some(l => l.name === filter))
+    : allIssues;
   const el = document.getElementById('githubPanel');
   const countEl = document.getElementById('issueCount');
-  countEl.textContent = issues.length;
-  if (issues.length === 0) {
+  countEl.textContent = filtered.length;
+  if (filtered.length === 0) {
     el.innerHTML = '<div class="empty"><span class="empty-check">&#10003;</span> No open issues</div>';
     return;
   }
   el.innerHTML = `<table class="data-table">
     <thead><tr><th>#</th><th>Title</th><th>Labels</th><th>Age</th></tr></thead>
-    <tbody>${issues.map(i => `<tr>
+    <tbody>${filtered.map(i => `<tr>
       <td><a href="${esc(i.url)}" target="_blank" class="gh-link">#${i.number}</a></td>
       <td>${esc(i.title)}</td>
       <td>${i.labels.map(l => `<span class="gh-label" style="background:#${l.color}22;color:#${l.color};border:1px solid #${l.color}44">${esc(l.name)}</span>`).join(' ')}</td>
